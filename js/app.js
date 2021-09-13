@@ -30,7 +30,7 @@ const showProducts = (products) => {
             </div>
 
             <h2>Price: $ ${product.price}</h2>
-            <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn btn-success">add to cart</button>
+            <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn btn-success">Add to Cart</button>
             <button id="details-btn" class="btn btn-danger">Details</button>
           </div>
       </div>
