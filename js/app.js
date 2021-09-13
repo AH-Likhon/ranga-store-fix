@@ -1,5 +1,4 @@
-// #f0f4ff
-
+// load products
 const loadProducts = () => {
   const url = `https://fakestoreapi.com/products`;
   fetch(url)
@@ -10,19 +9,16 @@ loadProducts();
 
 // show all product in UI 
 const showProducts = (products) => {
-  // console.log(products);
   const allProducts = products.map((pd) => pd);
   for (const product of allProducts) {
     // console.log(product);
     const image = product.image;
     const div = document.createElement("div");
-    div.classList.add("product");
     div.classList.add("col");
-    // div.classList.add("h-100");
     div.innerHTML = `
       <div id="single-product" class="single-product card h-100">
           <div class="text-center">
-              <img class="product-image card-img-fluid mt-5" src=${image}></img>
+              <img class="product-image card-img-fluid mt-3" src=${image}></img>
           </div>
 
           <div class="card-body text-center">
@@ -42,19 +38,24 @@ const showProducts = (products) => {
     document.getElementById("all-products").appendChild(div);
   }
 };
+
+// add product to cart
 let count = 0;
 const addToCart = (id, price) => {
   count = count + 1;
+
+  // update price
   updatePrice("price", price);
 
+  // update tax and charge
   updateTaxAndCharge();
   document.getElementById("total-Products").innerText = count;
 };
 
+// get input value
 const getInputValue = (id) => {
   const element = document.getElementById(id).innerText;
   const converted = parseFloat(element);
-  // console.log(converted);
   return converted;
 };
 
@@ -63,7 +64,6 @@ const updatePrice = (id, value) => {
   const convertedOldPrice = getInputValue(id);
   const convertPrice = parseFloat(value);
   const total = convertedOldPrice + convertPrice;
-  // console.log(total);
   document.getElementById(id).innerText = parseFloat(total).toFixed(2);
   updateTotal();
 };
@@ -74,7 +74,7 @@ const setInnerText = (id, value) => {
   updateTotal();
 };
 
-// update delivery charge and total Tax
+// update delivery charge and total Tax Function
 const updateTaxAndCharge = () => {
   const priceConverted = getInputValue("price");
 
@@ -95,11 +95,5 @@ const updateTaxAndCharge = () => {
 //grandTotal update function
 const updateTotal = () => {
   const grandTotal = getInputValue("price") + getInputValue("delivery-charge") + getInputValue("total-tax");
-
-  // const deliverCahrgeValue = getInputValue("delivery-charge");
-  // const totalTaxValue = getInputValue("total-tax");
-
-  // console.log(deliverCahrgeValue);
-  // console.log(totalTaxValue);
   document.getElementById("total").innerText = parseFloat(grandTotal).toFixed(2);
 };
