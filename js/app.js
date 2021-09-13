@@ -10,22 +10,34 @@ loadProducts();
 
 // show all product in UI 
 const showProducts = (products) => {
+  // console.log(products);
   const allProducts = products.map((pd) => pd);
   for (const product of allProducts) {
-    const image = product.images;
+    // console.log(product);
+    const image = product.image;
     const div = document.createElement("div");
     div.classList.add("product");
+    div.classList.add("col");
+    // div.classList.add("h-100");
     div.innerHTML = `
-      <div class="single-product">
-          <div>
-              <img class="product-image" src=${image}></img>
+      <div id="single-product" class="single-product card h-100">
+          <div class="text-center">
+              <img class="product-image card-img-fluid mt-5" src=${image}></img>
           </div>
-          <h3>${product.title}</h3>
-          <p>Category: ${product.category}</p>
-          <h2>Price: $ ${product.price}</h2>
-          <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn btn-success">add to cart</button>
-          <button id="details-btn" class="btn btn-danger">Details</button>
-        </div>
+
+          <div class="card-body text-center">
+            <h3 class="card-title">${product.title}</h3>
+            <p class="card-text">Category: ${product.category}</p>
+
+            <div class="d-flex justify-content-around">
+            <h5 class="text-danger">${product.rating.rate} <i class="fas fa-star filled"></i><i class="fas fa-star empty"></i><i class="fas fa-star-half-alt"></i><span class="text-danger"> (${product.rating.count})</span></h5>
+            </div>
+
+            <h2>Price: $ ${product.price}</h2>
+            <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn btn-success">add to cart</button>
+            <button id="details-btn" class="btn btn-danger">Details</button>
+          </div>
+      </div>
       `;
     document.getElementById("all-products").appendChild(div);
   }
@@ -41,7 +53,8 @@ const addToCart = (id, price) => {
 
 const getInputValue = (id) => {
   const element = document.getElementById(id).innerText;
-  const converted = parseInt(element);
+  const converted = parseFloat(element);
+  // console.log(converted);
   return converted;
 };
 
@@ -50,17 +63,21 @@ const updatePrice = (id, value) => {
   const convertedOldPrice = getInputValue(id);
   const convertPrice = parseFloat(value);
   const total = convertedOldPrice + convertPrice;
-  document.getElementById(id).innerText = Math.round(total);
+  // console.log(total);
+  document.getElementById(id).innerText = parseFloat(total).toFixed(2);
+  updateTotal();
 };
 
 // set innerText function
 const setInnerText = (id, value) => {
-  document.getElementById(id).innerText = Math.round(value);
+  document.getElementById(id).innerText = parseFloat(value).toFixed(2);
+  updateTotal();
 };
 
 // update delivery charge and total Tax
 const updateTaxAndCharge = () => {
   const priceConverted = getInputValue("price");
+
   if (priceConverted > 200) {
     setInnerText("delivery-charge", 30);
     setInnerText("total-tax", priceConverted * 0.2);
@@ -77,8 +94,12 @@ const updateTaxAndCharge = () => {
 
 //grandTotal update function
 const updateTotal = () => {
-  const grandTotal =
-    getInputValue("price") + getInputValue("delivery-charge") +
-    getInputValue("total-tax");
-  document.getElementById("total").innerText = grandTotal;
+  const grandTotal = getInputValue("price") + getInputValue("delivery-charge") + getInputValue("total-tax");
+
+  // const deliverCahrgeValue = getInputValue("delivery-charge");
+  // const totalTaxValue = getInputValue("total-tax");
+
+  // console.log(deliverCahrgeValue);
+  // console.log(totalTaxValue);
+  document.getElementById("total").innerText = parseFloat(grandTotal).toFixed(2);
 };
