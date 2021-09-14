@@ -25,10 +25,9 @@ const showProducts = (products) => {
             <h3 class="card-title">${product.title}</h3>
             <p class="card-text">Category: ${product.category}</p>
 
-            <div class="d-flex justify-content-around">
-            <h5 class="text-danger">${product.rating.rate} <i class="fas fa-star filled"></i><i class="fas fa-star empty"></i><i class="fas fa-star-half-alt"></i><span class="text-danger"> (${product.rating.count})</span></h5>
-            </div>
-
+            <h5>Average Rating: <span class="text-danger">(${product.rating.rate})</span></h5>
+            <h5>Rating Count: <span class="text-danger">(${product.rating.count})</span></h5>
+            
             <h2>Price: $ ${product.price}</h2>
             <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn btn-success">Add to Cart</button>
             <button id="details-btn" class="btn btn-danger">Details</button>
@@ -78,18 +77,23 @@ const setInnerText = (id, value) => {
 const updateTaxAndCharge = () => {
   const priceConverted = getInputValue("price");
 
-  if (priceConverted > 200) {
+  if (priceConverted > 0 && priceConverted < 200) {
+    setInnerText("delivery-charge", 20);
+    setInnerText("total-tax", priceConverted * 0);
+  }
+  else if (priceConverted > 200 && priceConverted < 400) {
     setInnerText("delivery-charge", 30);
     setInnerText("total-tax", priceConverted * 0.2);
   }
-  if (priceConverted > 400) {
+  else if (priceConverted > 400 && priceConverted < 500) {
     setInnerText("delivery-charge", 50);
     setInnerText("total-tax", priceConverted * 0.3);
   }
-  if (priceConverted > 500) {
+  else if (priceConverted > 500) {
     setInnerText("delivery-charge", 60);
     setInnerText("total-tax", priceConverted * 0.4);
   }
+
 };
 
 //grandTotal update function
